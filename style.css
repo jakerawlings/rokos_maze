@@ -1,0 +1,63 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: black;
+    overflow: hidden;
+}
+
+#console {
+    background-color: black;
+    color: lime;
+    padding: 10px;
+}
+
+#command-form {
+    display: flex;
+    align-items: center;
+}
+
+.prompt-symbol {
+    color: lime;
+}
+
+#output {
+    height: 95%;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#command-input {
+    background-color: black;
+    color: lime;
+    border: none;
+    padding: 5px;
+    outline: none;
+    margin-left: 5px;
+}
+
+.command-line {
+    background-color: black;
+    border: none;
+    color: lime;
+    outline: none;
+    padding: 5px;
+    font-size: 16px;
+    flex-grow: 1;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#command-line::placeholder {
+    color: lime;
+}
+
+div {
+    line-height: 1.2;
+}
+
+pre {
+    margin: 0;            /* Removes default margin */
+    white-space: pre-wrap; /* Ensures that the text wraps and white space is preserved */
+    font-family: 'Courier New', Courier, monospace; /* Ensures a monospaced font is used */
+  }
