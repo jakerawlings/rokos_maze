@@ -174,7 +174,7 @@ async function processCommand(stage, command) {
             break;
         case 'sqli':
             await consolePrint('SENDING POST REQUEST WITH PAYLOAD: ' + command, false, 0);
-            await consolePrint('SERVER SIDE AUTHENTICATION CODE: SELECT USERS FROM USER WHERE USERNAME = \'BU_INTERN\' AND PASSWORD =\' ' + command + '\'', false, 0);
+            await consolePrint('SERVER SIDE AUTHENTICATION CODE: SELECT USER FROM USERS WHERE USERNAME = \'BU_INTERN\' AND PASSWORD =\'' + command + '\'', false, 0);
             const strippedCommand = command.replace(/\s+/g, "").toLowerCase();
             console.log(strippedCommand);
             if (strippedCommand == "'or1=1--"
