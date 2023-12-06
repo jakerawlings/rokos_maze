@@ -3,7 +3,6 @@ body, html {
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
     background-color: black;
-    overflow: hidden;
 }
 
 #console {
@@ -57,7 +56,7 @@ div {
 }
 
 pre {
-    margin: 0;            /* Removes default margin */
-    white-space: pre-wrap; /* Ensures that the text wraps and white space is preserved */
-    font-family: 'Courier New', Courier, monospace; /* Ensures a monospaced font is used */
+    margin: 0;          
+    white-space: pre-wrap; 
+    font-family: 'Courier New', Courier, monospace;
   }

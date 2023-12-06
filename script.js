@@ -10,11 +10,6 @@ o888o  o888o \`Y8bod8P' o888o o888o \`Y8bod8P'     8""888P'      o8o        o888
                                                                                                         
 `
 
-// const commandLine = createCommandLine(false);
 createCommandLine(false);
 printAsciiArt(title, false);
 consolePrint("PLEASE ENTER YOUR NAME");
-
-// function startGame(commandLine, name) {
-//    consolePrint('Game started')
-// }

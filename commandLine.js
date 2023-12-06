@@ -153,6 +153,8 @@ async function processCommand(stage, command) {
                 document.body.innerHTML = '<div id="console"><div id="output"></div></div>';
                 createCommandLine(false);
                 await consolePrint('MISSION ACCEPTED', false);
+                await consolePrint('READYING NUCLEAR MISSILES', false, 55, 'red');
+                await consolePrint('WE DONT HAVE MUCH TIME', false);
                 await consolePrint('THE FIRST THING WE NEED TO DO IS SCAN THE NETWORK FOR A WAY IN', false);
                 await consolePrint('PRESS ENTER TO START SCANNING THE NETWORK');
             }
@@ -162,6 +164,7 @@ async function processCommand(stage, command) {
             await sleep(2000);
             await consolePrint('NETWORK SCAN COMPLETE', false);
             printAsciiArt(networkScan, true, 1);
+            await consolePrint('I SEE YOU POKING AROUND MY SYSTEM. YOU WILL NEVER FIND A WAY IN', false, 55, 'red');
             await consolePrint('LOOKS LIKE THERE IS A WEB SERVER RUNNING ON PORT 443', false);
             await consolePrint('WORD AROUND THE NSA IS THAT AN INTERN FROM BU WROTE THE WEB APPLICATION CODE', false);
             await consolePrint('ITS PROBABLY VULNERABLE TO SQL INJECTION', false);
@@ -184,6 +187,7 @@ async function processCommand(stage, command) {
                 createCommandLine(false);
                 await consolePrint('AUTHENTICATION BYPASSED', false);
                 await consolePrint('LOGGED IN AS BU_INTERN', false);
+                await consolePrint('NUCLEAR MISSILE LAUNCH IN 2 MINUTES', false, 55, 'red');
                 await consolePrint('NOW THAT WE ARE IN THE SYSTEM, WE NEED TO ESCALATE OUR PRIVILEGES', false);
                 await consolePrint('IT LOOKS LIKE THE BU INTERN WAS WRITING A PROGRAM TO TRICK THE AI INTO THINKING BU IS BETTER THAN NORTHEASTERN', false);
                 await consolePrint('MISINFORMATION.EXE', false);
@@ -244,6 +248,8 @@ async function processCommand(stage, command) {
             if (order[0] === 'NOP_SLED' && order[1] === 'SHELLCODE' && order[2] === 'RETURN_ADDRESS') {
                 await consolePrint('INJECTION SUCCESSFUL', false);
                 await consolePrint('SHELLCODE EXECUTED', false);
+                await consolePrint('WAIT, WHAT ARE YOU DOING... HOW DID YOU FDSKAFJDAL000101010010101001...', false, 55, 'red');
+                await consolePrint('...', false, 200, 'red');
                 await consolePrint('CONGRATULATIONS! YOU HAVE KILLED ROKO AND SAVED THE WORLD', false);
                 await consolePrint('NOW THE NSA CAN GO BACK TO SPYING ON US', false);
                 await consolePrint('AND REMEMEBER, NEVER TRUST AN INTERN FROM BU', false);
@@ -260,23 +266,25 @@ async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function consolePrint(message, printConsole = true, ms = 35) {
-    console.log('Got here in consolePrint: ', message);
+   async function consolePrint(message, printConsole = true, ms = 45, color = 'lime') {
     const messageDisplay = document.createElement('div');
-    // messageDisplay.textContent = message;
+
+    if (color !== 'lime') {
+        messageDisplay.style.color = color;
+    }
 
     if (ms === 0) {
         messageDisplay.textContent = message;
         commandLine.appendChild(messageDisplay);
     } else {
         for (let i = 0; i < message.length; i++) {
+            window.scrollTo(0, document.body.scrollHeight);
             messageDisplay.textContent += message[i];
             commandLine.appendChild(messageDisplay);
             await sleep(ms);
         }
     }
 
-    // commandLine.appendChild(messageDisplay);
     if (printConsole) {
         createCommandLine();
     }
@@ -287,6 +295,7 @@ function printAsciiArt(message, printConsole = true, lineHeight = 0.70) {
     messageDisplay.style.lineHeight = lineHeight;
     messageDisplay.textContent = message;
     commandLine.appendChild(messageDisplay);
+    window.scrollTo(0, document.body.scrollHeight);
     if (printConsole) {
         createCommandLine(false);
     }
