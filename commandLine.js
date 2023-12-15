@@ -164,7 +164,7 @@ async function processCommand(stage, command) {
             break;
         case 'challenge1':
             await consolePrint('SCANNING NETWORK...', false);
-            playSound('scan.mp3', 0, 1.5);
+            playSound('scan.mp3', 0, 1);
             await sleep(2000);
             await consolePrint('NETWORK SCAN COMPLETE', false);
             printAsciiArt(networkScan, true, 1);
