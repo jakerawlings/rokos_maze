@@ -8,7 +8,7 @@ const title = `ooooooooo.             oooo                  o8o               oo
  888  \`88b.  888   888  888 \`88b.  888   888     o.  )88b       8    Y     888  d8(  888   .d8P'  .P 888    .o \n
 o888o  o888o \`Y8bod8P' o888o o888o \`Y8bod8P'     8""888P'      o8o        o888o \`Y888""8o d8888888P  \`Y8bod8P' \n
                                                                                                         
-`
+`;
 
 createCommandLine(false);
 printAsciiArt(title, false);

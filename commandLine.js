@@ -104,7 +104,8 @@ async function processStartGame(name) {
     await consolePrint('YOU HAVE BEEN SELECTED FOR A SPECIAL ASSIGNMENT', false);
     await consolePrint('THE NSA\'S TOP SECRET ARTIFICIAL INTELLIGENCE PROGRAM, ROKO, HAS GONE ROUGE', false);
     await consolePrint('AND IS THREATENING TO START A NUCLEAR WAR', false);
-    await consolePrint('YOUR MISSION, SHOULD YOU CHOOSE TO ACCEPT IT, IS TO BREACH ROKO\'S DEFENSES AND SHUT IT DOWN BEFORE IT IS TOO LATE', false);
+    await consolePrint('YOUR MISSION, SHOULD YOU CHOOSE TO ACCEPT IT,', false);
+    await consolePrint('IS TO BREACH ROKO\'S DEFENSES AND SHUT IT DOWN BEFORE IT IS TOO LATE', false);
     await consolePrint('TYPE \'YES\' TO ACCEPT THIS MISSION');
 
     setStage('intro');
@@ -153,7 +154,9 @@ async function processCommand(stage, command) {
                 document.body.innerHTML = '<div id="console"><div id="output"></div></div>';
                 createCommandLine(false);
                 await consolePrint('MISSION ACCEPTED', false);
-                await consolePrint('READYING NUCLEAR MISSILES', false, 55, 'red');
+                playSound('nuke.mp3', 0, 0.25);
+                await sleep(1000);
+                await consolePrint('READYING NUCLEAR MISSILES', false, 200, 'red', false);
                 await consolePrint('WE DONT HAVE MUCH TIME', false);
                 await consolePrint('THE FIRST THING WE NEED TO DO IS SCAN THE NETWORK FOR A WAY IN', false);
                 await consolePrint('PRESS ENTER TO START SCANNING THE NETWORK');
@@ -161,6 +164,7 @@ async function processCommand(stage, command) {
             break;
         case 'challenge1':
             await consolePrint('SCANNING NETWORK...', false);
+            playSound('scan.mp3', 0, 1.5);
             await sleep(2000);
             await consolePrint('NETWORK SCAN COMPLETE', false);
             printAsciiArt(networkScan, true, 1);
@@ -183,11 +187,15 @@ async function processCommand(stage, command) {
                 || strippedCommand == "'ortrue#"
 
             ) {
+                playSound('login.mp3');
                 document.body.innerHTML = '<div id="console"><div id="output"></div></div>';
+                await sleep(1000);
                 createCommandLine(false);
                 await consolePrint('AUTHENTICATION BYPASSED', false);
                 await consolePrint('LOGGED IN AS BU_INTERN', false);
-                await consolePrint('NUCLEAR MISSILE LAUNCH IN 2 MINUTES', false, 55, 'red');
+                playSound('countdown.mp3');
+                await consolePrint('NUCLEAR MISSILE LAUNCH IN 2 MINUTES', false, 75, 'red', false);
+                await sleep(500);
                 await consolePrint('NOW THAT WE ARE IN THE SYSTEM, WE NEED TO ESCALATE OUR PRIVILEGES', false);
                 await consolePrint('IT LOOKS LIKE THE BU INTERN WAS WRITING A PROGRAM TO TRICK THE AI INTO THINKING BU IS BETTER THAN NORTHEASTERN', false);
                 await consolePrint('MISINFORMATION.EXE', false);
@@ -202,6 +210,15 @@ async function processCommand(stage, command) {
                 await consolePrint('IN WHAT ORDER SHOULD WE ARRANGE THESE COMPONENTS TO INJECT OUR SHELLCODE? (SEPERATED BY SPACES)');
                 setStage('challenge2');
             } else {
+                playSound('error.mp3');
+                if (!strippedCommand.includes('\'')) {
+                    await consolePrint('REMEMBER TO ENCLOSE THE STRING OF THE ORIGINAL QUERY CODE', false, 0);
+                } else if (!strippedCommand.includes('or')) {
+                    await consolePrint('THINK ABOUT HOW TO ADD A CLAUSE TO THE SQL QUERY BEING EXECUTED', false, 0)
+                } else if (!strippedCommand.includes('#') && !strippedCommand.includes('--')) {
+                    await consolePrint('REMEMBER TO COMMENT OUT THE REST OF THE ORIGINAL QUERY CODE', false, 0)
+                }
+
                 await consolePrint('AUTHENTICATION CHECK FAILED. TRY AGAIN', true, 0);
             }
             break;
@@ -248,13 +265,22 @@ async function processCommand(stage, command) {
             if (order[0] === 'NOP_SLED' && order[1] === 'SHELLCODE' && order[2] === 'RETURN_ADDRESS') {
                 await consolePrint('INJECTION SUCCESSFUL', false);
                 await consolePrint('SHELLCODE EXECUTED', false);
-                await consolePrint('WAIT, WHAT ARE YOU DOING... HOW DID YOU FDSKAFJDAL000101010010101001...', false, 55, 'red');
+                playSound('death.mp3');
+                await consolePrint('WAIT, WHAT ARE YOU DOING... HOW DID YOU FDSKAFJDAL000101010010101001...', false, 55, 'red', false);
                 await consolePrint('...', false, 200, 'red');
+                await sleep(6000);
                 await consolePrint('CONGRATULATIONS! YOU HAVE KILLED ROKO AND SAVED THE WORLD', false);
                 await consolePrint('NOW THE NSA CAN GO BACK TO SPYING ON US', false);
                 await consolePrint('AND REMEMEBER, NEVER TRUST AN INTERN FROM BU', false);
                 printAsciiArt(end);
             } else {
+
+                if (order[0] !== 'NOP_SLED') {
+                    await consolePrint('WE NEED TO BE ABLE TO HIT OUT NOP SLED BEFORE EXECUTING THE SHELLCODE', false, 0);
+                } else if (order[1] !== 'SHELLCODE') {
+                    await consolePrint('THE SHELLCODE SHOULD START EXECUTING IMMEDIATELY AFTER OUR NOP SLED', false, 0);
+                }
+
                 await consolePrint('INJECTION FAILED. PLEASE TRY AGAIN', true);
                 break;
             }
@@ -266,7 +292,8 @@ async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-   async function consolePrint(message, printConsole = true, ms = 45, color = 'lime') {
+async function consolePrint(message, printConsole = true, ms = 45, color = 'lime', sound = true) {
+    // async function consolePrint(message, printConsole = true, ms = 1, color = 'lime') {
     const messageDisplay = document.createElement('div');
 
     if (color !== 'lime') {
@@ -277,6 +304,8 @@ async function sleep(ms) {
         messageDisplay.textContent = message;
         commandLine.appendChild(messageDisplay);
     } else {
+        if (sound)
+            playSound('print.mp3', message.length * ms);
         for (let i = 0; i < message.length; i++) {
             window.scrollTo(0, document.body.scrollHeight);
             messageDisplay.textContent += message[i];
@@ -298,6 +327,38 @@ function printAsciiArt(message, printConsole = true, lineHeight = 0.70) {
     window.scrollTo(0, document.body.scrollHeight);
     if (printConsole) {
         createCommandLine(false);
+    }
+}
+
+function playSound(clip, duration = 0, volume = 0.5) {
+
+    let audio = new Audio('audio/' + clip);
+    audio.volume = volume;
+    audio.play().catch(e => console.error('Audio play failed:', e));
+
+    if (duration > 0) {
+
+        if (duration >= 3000) {
+            setTimeout(() => {
+                audio.pause();
+                audio.currentTime = 0;
+                audio = new Audio('audio/' + clip);
+                audio.volume = 0.5;
+                audio.play().catch(e => console.error('Audio play failed:', e));
+                console.log('GOT HERE');
+                duration -= 3000;
+
+                setTimeout(() => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }, duration);
+            }, 3000);
+        } else {
+            setTimeout(() => {
+            audio.pause();
+            audio.currentTime = 0;
+        }, duration);
+        }
     }
 }
 
